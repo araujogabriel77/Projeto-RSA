@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <string.h>
-#include <math.h>
 
-//Verifica o MDC
+//Retorna o MDC dos dois numeros
 int mdc(long long int num1, long long int num2)
 {
-	//quando num2 == 0 achamos o mdc
 	if (num2 == 0)
 	{
 		return num1;
@@ -16,7 +14,7 @@ int mdc(long long int num1, long long int num2)
 	}
 }
 
-//Checa se o número é primo
+//Verifica se o número é primo
 int prime(long long int num)
 {
 	int prime = 2, i;
@@ -37,37 +35,41 @@ int prime(long long int num)
 	}
 	return prime;
 }
-//Cálculo de fi(n)
+
+//Calcula a função toitente fi(n)
 long long int fi(long long int p, long long int q)
 {
-	long long int funcFi;
-	funcFi = (p - 1) * (q - 1);
-	return funcFi;
+	long long int toitente;
+	toitente = (p - 1) * (q - 1);
+	return toitente;
 }
-//Cálculo da chave pública n
+
+//Retorna a chave pública n
 long long int pub_key(long long int p, long long int q)
 {
 	long long int key;
 	key = p * q;
 	return key;
 }
-//Faz a exponenciacao modular
+
+//Retorna o resultado da exponenciação modular
 long long int expmod(long long int base, long long int expoente, long long int modulo)
 {
 	long long int t = 1, i;
 	for (i = 0; i < expoente; i++)
 	{
-		t = (t * base) % modulo;
+		t = t * base % modulo;
 	}
 	return t;
 }
 
-long long int inverse(long long int chave, long long int modulo) //calcula o inverso
+//Calcula o inverso
+long long int inverse(long long int chave, long long int modulo)
 {
 	long long int i = 1, j;
 	while (i <= modulo)
 	{
-		j = (chave * i) % modulo;
+		j = chave * i % modulo;
 		i++;
 		if (j == 1)
 		{
@@ -76,7 +78,8 @@ long long int inverse(long long int chave, long long int modulo) //calcula o inv
 	}
 	return i - 1;
 }
-//Desencripta o char.
+
+//Desencripta o char
 char descripto(long long int base, long long int expoente, long long int mod)
 {
 	return (char)expmod(base, expoente, mod);
@@ -84,8 +87,8 @@ char descripto(long long int base, long long int expoente, long long int mod)
 
 int main()
 {
-
-	long long int option, p_prime, q_prime, e_coprime, n_key, d_key, h, i, j, k, l;
+	int l;
+	long long int option, p_prime, q_prime, e_coprime, n_key, d_key, h, i, j, k;
 
 	FILE *file1;				   //Arquivo que recebe a chave pública
 	FILE *file2;				   //Arquivo que recebe mensagem criptografada
@@ -96,25 +99,28 @@ int main()
 	long long int numero_c[10000]; //Recebe o valor inteiro do char depois que foi encriptado
 	long long int numero[10000];   //Recebe o valor inteiro do char antes de ser criptado
 
-	//menú
+	//Menu
 	printf("Escolha uma tarefa valida:\n");
 	printf("1-Gerar chave publica\n");
 	printf("2-Criptografar\n");
 	printf("3-Descriptografar\n");
 	printf("0-Fechar o programa \n");
 
-	scanf("%lld", &option); //Usuário escolhe a opcao
+	//Usuário escolhe a opção
+	scanf("%lld", &option);
 
-	//Fica em loop até o usauário digitar 0
+	//Fica em loop até o usuário digitar 0
 	while (option != 0)
 	{
-		while (option < 1 || option > 3) //Fica em loop até o usuário digitar uma escolha válida
+		//Fica em loop até o usuário digitar uma escolha válida
+		while (option < 1 || option > 3)
 		{
 			printf("Escolha uma tarefa valida\n");
 			scanf("%lld", &option);
 		}
 
-		if (option == 1) //Gera a chave pública
+		//Gera a chave pública
+		if (option == 1)
 		{
 			printf("escolha um primo 'p':\n");
 			scanf("%lld", &p_prime);	//Atribui valor para o primo p
@@ -201,17 +207,16 @@ int main()
 			k = fi(p_prime, q_prime);		   //k recebe o valor de (p-1)*(q-1)
 			d_key = inverse(e_coprime, k);	   //Atribui valor ao inverso d
 
-			file3 = fopen("Mensagem original.txt", "a");   //Abre o arquivo
+			file3 = fopen("Mensagem original.txt", "w");   //Abre o arquivo
 			file4 = fopen("Mensagem encriptada.txt", "r"); //Abre o arquivo com a mensagem externa
 
 			fscanf(file4, "%lld", &l);
 
 			descript[0] = descripto(l, d_key, n_key);
-			printf("%lld %lld", descript[0], l);
 
-			for (i = 0; descript[i] != EOF; i++)
+			for (i = 1; descript[i - 1] != '\n'; i++)
 			{
-				fscanf(file4, "%lld", &l);
+				fscanf(file4, "%d", &l);
 				descript[i] = descripto(l, d_key, n_key);
 			}
 
