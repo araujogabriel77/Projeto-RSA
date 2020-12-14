@@ -226,7 +226,7 @@ int main()
 			fclose(file4); //Fecha o arquivo
 			printf("Mesagem salva no diretorio de execucao\n");
 		}
-		//Apresenta o menú mais uma vez
+		//Apresenta o menu mais uma vez
 		printf("Escolha uma nova tarefa:\n");
 		printf("1-Gerar chave publica\n");
 		printf("2-Criptografar\n");
