@@ -1,7 +1,2 @@
 rsa.exe
-testes.exe
-testes.c
-RSA2.C
-RSA2.exe
-.vscode
-testes
+*.txt
