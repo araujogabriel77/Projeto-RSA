@@ -1,82 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-
-//Retorna o MDC dos dois numeros
-int mdc(long long int a, long long int b)
-{
-	return b == 0 ? a : mdc(b, a % b);
-}
-
-//Verifica se o número é primo
-int prime(long long int num)
-{
-	int prime = 2, i;
-	if (num == 1 || num == 0)
-	{
-		prime = 1;
-	}
-	else
-	{
-		for (i = 2; i < num; i++)
-		{
-			if (num % i == 0)
-			{
-				prime = 1;
-				break;
-			}
-		}
-	}
-	return prime;
-}
-
-//Calcula a função toitente fi(n)
-long long int fi(long long int p, long long int q)
-{
-	long long int toitente;
-	toitente = (p - 1) * (q - 1);
-	return toitente;
-}
-
-//Retorna a chave pública n
-long long int pub_key(long long int p, long long int q)
-{
-	long long int key;
-	key = p * q;
-	return key;
-}
-
-//Retorna o resultado da exponenciação modular
-long long int expmod(long long int base, long long int expoente, long long int modulo)
-{
-	long long int t = 1, i;
-	for (i = 0; i < expoente; i++)
-	{
-		t = t * base % modulo;
-	}
-	return t;
-}
-
-//Calcula o inverso
-long long int inverse(long long int chave, long long int modulo)
-{
-	long long int i = 1, j;
-	while (i <= modulo)
-	{
-		j = chave * i % modulo;
-		i++;
-		if (j == 1)
-		{
-			break;
-		}
-	}
-	return i - 1;
-}
-
-//Desencripta o char
-char descripto(long long int base, long long int expoente, long long int mod)
-{
-	return (char)expmod(base, expoente, mod);
-}
+#include "functions.h"
 
 int main()
 {
@@ -114,25 +39,25 @@ int main()
 		//Gera a chave pública
 		if (option == 1)
 		{
-			printf("escolha um primo 'p' >= 7:\n");
-			scanf("%lld", &p_prime);				   //Atribui valor para o primo p
-			while (prime(p_prime) == 1 || p_prime < 7) //Fica em loop até o usuário digitar um valor primo
+			printf("escolha um primo 'p' > 10:\n");
+			scanf("%lld", &p_prime);					//Atribui valor para o primo p
+			while (prime(p_prime) == 1 || p_prime < 10) //Fica em loop até o usuário digitar um valor primo
 			{
 				printf("Numero invalido\n");
 				scanf("%lld", &p_prime);
 			}
 
-			printf("escolha um primo 'q' >= 13:\n");
-			scanf("%lld", &q_prime);					//Atribui valor para o primo q
-			while (prime(q_prime) == 1 || q_prime < 13) //Fica em loop até o usuário digitar um valor primo
+			printf("escolha um primo 'q' > 10 e != de %lld:\n", p_prime);
+			scanf("%lld", &q_prime);										  //Atribui valor para o primo q
+			while (prime(q_prime) == 1 || q_prime < 10 || q_prime == p_prime) //Fica em loop até o usuário digitar um valor primo
 			{
 				printf("Numero invalido\n");
 				scanf("%lld", &q_prime);
 			}
 
-			printf("escolha um expoente 'e' coprimo a %lld e que seja < %lld:\n", fi(p_prime, q_prime), fi(p_prime, q_prime));
-			scanf("%lld", &e_coprime);															   //Atribui valor para o coprimo e
-			while (mdc(e_coprime, fi(p_prime, q_prime)) != 1 || e_coprime >= fi(p_prime, q_prime)) //Fica em loop até o usuário digitar um valor válido
+			printf("escolha um expoente 'e' menor e coprimo a %lld:\n", fi(p_prime, q_prime));
+			scanf("%lld", &e_coprime);															  //Atribui valor para o coprimo e
+			while (mdc(e_coprime, fi(p_prime, q_prime)) != 1 || e_coprime > fi(p_prime, q_prime)) //Fica em loop até o usuário digitar um valor válido
 			{
 				printf("Numero invalido\n");
 				scanf("%lld", &e_coprime);
