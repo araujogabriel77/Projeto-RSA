@@ -2,16 +2,9 @@
 #include <string.h>
 
 //Retorna o MDC dos dois numeros
-int mdc(long long int num1, long long int num2)
+int mdc(long long int a, long long int b)
 {
-	if (num2 == 0)
-	{
-		return num1;
-	}
-	else
-	{
-		return mdc(num2, num1 % num2);
-	}
+	return b == 0 ? a : mdc(b, a % b);
 }
 
 //Verifica se o número é primo
@@ -87,8 +80,7 @@ char descripto(long long int base, long long int expoente, long long int mod)
 
 int main()
 {
-	int l;
-	long long int option, p_prime, q_prime, e_coprime, n_key, d_key, h, i, j, k;
+	long long int option, p_prime, q_prime, e_coprime, n_key, d_key, h, i, j, k, l;
 
 	FILE *file1;				   //Arquivo que recebe a chave pública
 	FILE *file2;				   //Arquivo que recebe mensagem criptografada
@@ -122,25 +114,25 @@ int main()
 		//Gera a chave pública
 		if (option == 1)
 		{
-			printf("escolha um primo 'p':\n");
-			scanf("%lld", &p_prime);	//Atribui valor para o primo p
-			while (prime(p_prime) == 1) //Fica em loop até o usuário digitar um valor primo
+			printf("escolha um primo 'p' >= 7:\n");
+			scanf("%lld", &p_prime);				   //Atribui valor para o primo p
+			while (prime(p_prime) == 1 || p_prime < 7) //Fica em loop até o usuário digitar um valor primo
 			{
 				printf("Numero invalido\n");
 				scanf("%lld", &p_prime);
 			}
 
-			printf("escolha um primo 'q':\n");
-			scanf("%lld", &q_prime);	//Atribui valor para o primo q
-			while (prime(q_prime) == 1) //Fica em loop até o usuário digitar um valor primo
+			printf("escolha um primo 'q' >= 13:\n");
+			scanf("%lld", &q_prime);					//Atribui valor para o primo q
+			while (prime(q_prime) == 1 || q_prime < 13) //Fica em loop até o usuário digitar um valor primo
 			{
 				printf("Numero invalido\n");
 				scanf("%lld", &q_prime);
 			}
 
-			printf("escolha um expoente 'e' coprimo a %lld:\n", fi(p_prime, q_prime));
-			scanf("%lld", &e_coprime);						  //Atribui valor para o coprimo e
-			while (mdc(e_coprime, fi(p_prime, q_prime)) != 1) //Fica em loop até o usuário digitar um valor válido
+			printf("escolha um expoente 'e' coprimo a %lld e que seja < %lld:\n", fi(p_prime, q_prime), fi(p_prime, q_prime));
+			scanf("%lld", &e_coprime);															   //Atribui valor para o coprimo e
+			while (mdc(e_coprime, fi(p_prime, q_prime)) != 1 || e_coprime >= fi(p_prime, q_prime)) //Fica em loop até o usuário digitar um valor válido
 			{
 				printf("Numero invalido\n");
 				scanf("%lld", &e_coprime);
